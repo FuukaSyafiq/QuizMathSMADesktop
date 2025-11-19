@@ -5,6 +5,7 @@
 package com.tugas.quizmath_player;
 
 import com.formdev.flatlaf.FlatLightLaf;
+import com.tugas.quizmath_player.form.LoadingForm;
 import javax.swing.UIManager;
 /**
  *
@@ -19,7 +20,7 @@ public class Quizmath_player {
             e.printStackTrace();
         }
         javax.swing.SwingUtilities.invokeLater(() -> {
-            form.LoadingForm lf = new form.LoadingForm();
+            LoadingForm lf = new LoadingForm();
             lf.setVisible(true);
             lf.startLoading();  // jalanin progress bar
         });

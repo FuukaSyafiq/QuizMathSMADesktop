@@ -1,8 +1,7 @@
-package form;
+package com.tugas.quizmath_player.form;
 
 import repository.QuestionRepository;
 import entity.Question;
-import entity.OptionAnswer;
 import helper.Session;
 import java.awt.Image;
 import java.util.Collections;
@@ -75,7 +74,7 @@ public class QuestionForm extends javax.swing.JFrame {
     private void loadQuestion() {
         if (currentIndex < 0 || currentIndex >= randomizedIds.size()) {
             globalTimer.stop();
-            new form.DoneForm().setVisible(true);
+            new DoneForm().setVisible(true);
             this.dispose();
             return;
         }
@@ -191,7 +190,7 @@ public class QuestionForm extends javax.swing.JFrame {
             loadQuestion();
         } else {
              this.globalTimer.stop();
-            new form.DoneForm().setVisible(true);
+            new DoneForm().setVisible(true);
             this.dispose();
         }
     }
@@ -258,7 +257,7 @@ public class QuestionForm extends javax.swing.JFrame {
             saveCurrentAnswer();
             globalTimer.stop();
             this.dispose(); // selesai ujian
-            new form.DoneForm().setVisible(true);
+            new DoneForm().setVisible(true);
         }
     });
 
@@ -308,6 +307,7 @@ public class QuestionForm extends javax.swing.JFrame {
         jScrollPane2.setHorizontalScrollBarPolicy(javax.swing.ScrollPaneConstants.HORIZONTAL_SCROLLBAR_ALWAYS);
         jScrollPane2.setVerticalScrollBarPolicy(javax.swing.ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
 
+        jPanel8.setBackground(new java.awt.Color(78, 97, 211));
         jPanel8.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
 
         answerBImg.setText("jLabel4");

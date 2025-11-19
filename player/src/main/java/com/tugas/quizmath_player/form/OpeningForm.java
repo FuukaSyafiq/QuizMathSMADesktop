@@ -2,7 +2,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
  */
-package form;
+package com.tugas.quizmath_player.form;
 
 import javax.swing.JFrame;
 
@@ -97,7 +97,7 @@ public class OpeningForm extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        new form.QuestionForm().setVisible(true);
+        new QuestionForm().setVisible(true);
         this.dispose();
     }//GEN-LAST:event_jButton1ActionPerformed
 

@@ -2,38 +2,37 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
  */
-package form;
+package com.tugas.quizmath_player.form;
 
-import entity.Leaderboard;
-import entity.Siswa;
+import com.tugas.quizmath_player.entity.Leaderboard;
+import com.tugas.quizmath_player.repository.FinalScoreRepository;
 import java.util.List;
 import javax.swing.JFrame;
 import javax.swing.table.DefaultTableModel;
-import repository.FinalScoreRepository;
 
 /**
  *
  * @author syafiq
  */
-public class LeaderboardForm extends javax.swing.JFrame {
+public class NilaiForm extends javax.swing.JFrame {
     
     private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(LeaderboardForm.class.getName());
     private FinalScoreRepository fscore_repo;
     /**
      * Creates new form Dashboard
      */
-    public LeaderboardForm() {
+    public NilaiForm() {
         this.fscore_repo = new FinalScoreRepository();
-        initComponents();
+                initComponents();
+
         setLocationRelativeTo(null); // posisi center
        setExtendedState(JFrame.MAXIMIZED_BOTH); // otomatis full screen
-        
-        getLeaderboard();
+//        getLeaderboard();
     }
     
     private void getLeaderboard() {
         String[] columnNames = {
-            "id", "nama", "nis", "kelas", "correct answer", "wrong answer", "total question", "final score" 
+            "id", "nama", "nis", "wrong answer", "total question", "final score" 
         };
 
         DefaultTableModel model = new DefaultTableModel(columnNames, 0);
@@ -45,7 +44,6 @@ public class LeaderboardForm extends javax.swing.JFrame {
                l.id,
                l.siswa,
                l.nis,
-               l.kelas,
                l.correct_anwer,
                l.wrong_anwer,
                l.total_question,
@@ -149,13 +147,13 @@ public class LeaderboardForm extends javax.swing.JFrame {
 
         tabelLeaderboard.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null}
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null}
             },
             new String [] {
-                "Id", "Nama", "NIS", "Final Score", "Correct Answer", "Wrong Answer", "Total Question"
+                "Id", "Nama", "NIS", "Soal 1", "Soal 2"
             }
         ));
         tabelLeaderboard.setShowGrid(true);
@@ -182,13 +180,13 @@ public class LeaderboardForm extends javax.swing.JFrame {
                         .addGap(23, 23, 23))))
         );
         layout.setVerticalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
             .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+            .addGroup(layout.createSequentialGroup()
                 .addGap(20, 20, 20)
                 .addComponent(jButton6)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 1131, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(102, 102, 102)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 1041, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
 
         pack();
@@ -196,7 +194,8 @@ public class LeaderboardForm extends javax.swing.JFrame {
 
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
       new DaftarSiswaForm().setVisible(true);
-      this.dispose();
+            this.dispose();
+
     }//GEN-LAST:event_jButton3ActionPerformed
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
@@ -209,12 +208,12 @@ public class LeaderboardForm extends javax.swing.JFrame {
     }//GEN-LAST:event_jButton6ActionPerformed
 
     private void jButton5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton5ActionPerformed
-      new NilaiForm().setVisible(true);
-      this.dispose();
+//      new NilaiForm().setVisible(true);
     }//GEN-LAST:event_jButton5ActionPerformed
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-        // TODO add your handling code here:
+        new LeaderboardForm().setVisible(true);     
+        this.dispose();
     }//GEN-LAST:event_jButton2ActionPerformed
 
 

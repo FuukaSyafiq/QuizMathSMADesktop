@@ -2,7 +2,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
  */
-package form;
+package com.tugas.quizmath_player.form;
 
 import javax.swing.*;
 import java.awt.*;
@@ -54,7 +54,7 @@ centerPanel.setLayout(new GridBagLayout()); // biar bisa taruh komponen di tenga
             // setelah selesai, tampilkan form lain atau tutup
             SwingUtilities.invokeLater(() -> {
                 dispose();
-                new AuthForm().setVisible(true);
+                new LoginPicker().setVisible(true);
              //   JOptionPane.showMessageDialog(null, "Loading selesai!");
             });
         }).start();

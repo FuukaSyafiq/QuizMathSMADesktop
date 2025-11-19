@@ -2,31 +2,27 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-package entity;
+package com.tugas.quizmath_player.entity;
 
 /**
  *
  * @author syafiq
  */
-public class Kelas {
+public class Siswa {
     public int id;
+    public String nama;
+    public String nis;
+    public int no_absen;
     public String kelas;
     public String jurusan;
     
-    // Constructor kosong (default)
-    public Kelas() {
-    }
-
-    // Constructor dengan semua field
-    public Kelas(int id, String kelas, String jurusan) {
+     // Constructor
+    public Siswa(int id, String nama, String nis, int no_absen, String kelas, String jurusan) {
         this.id = id;
+        this.nama = nama;
+        this.nis = nis;
+        this.no_absen = no_absen;
         this.kelas = kelas;
         this.jurusan = jurusan;
-    }
-    
-     @Override
-    public String toString() {
-        // Teks yang tampil di combo box
-        return kelas;
     }
 }

@@ -2,20 +2,17 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
  */
-package form;
+package com.tugas.quizmath_player.form;
 
-import entity.Answer;
 import entity.Kelas;
-import entity.Question;
-import entity.Siswa;
+import com.tugas.quizmath_player.entity.Siswa;
+import com.tugas.quizmath_player.repository.DataSiswaRepository;
 import java.util.List;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
-import repository.KelasRepository;
-import repository.QuestionRepository;
-import repository.SiswaRepository;
-import utils.MultiLineCellRenderer;
+import com.tugas.quizmath_player.repository.KelasRepository;
+import com.tugas.quizmath_player.utils.MultiLineCellRenderer;
 
 /**
  *
@@ -24,7 +21,7 @@ import utils.MultiLineCellRenderer;
 public class DaftarSiswaForm extends javax.swing.JFrame {
     
     private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(DaftarSiswaForm.class.getName());
-    private SiswaRepository siswa_repo;
+    private DataSiswaRepository siswa_repo;
     private KelasRepository kelas_repo;
     private int selectedRow = -1;
     private int selectedIdSiswa = -1;
@@ -33,7 +30,7 @@ public class DaftarSiswaForm extends javax.swing.JFrame {
      * Creates new form Dashboard
      */
     public DaftarSiswaForm() {
-        this.siswa_repo = new SiswaRepository();
+        this.siswa_repo = new DataSiswaRepository();
            this.kelas_repo = new KelasRepository();
         initComponents();
         setLocationRelativeTo(null); // posisi center

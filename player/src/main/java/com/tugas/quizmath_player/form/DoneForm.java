@@ -2,11 +2,11 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
  */
-package form;
+package com.tugas.quizmath_player.form;
 
+import com.tugas.quizmath_player.repository.FinalScoreRepository;
 import helper.Session;
 import javax.swing.JFrame;
-import repository.FinalScoreRepository;
 
 /**
  *
@@ -98,7 +98,7 @@ public class DoneForm extends javax.swing.JFrame {
        int siswaId = Session.getCurrentSiswaId();
         
       this.fscore_repo.calculateScore(this, siswaId);
-      new form.AuthForm().setVisible(true);
+      new AuthForm().setVisible(true);
       this.dispose();
     }//GEN-LAST:event_jButton1ActionPerformed
 

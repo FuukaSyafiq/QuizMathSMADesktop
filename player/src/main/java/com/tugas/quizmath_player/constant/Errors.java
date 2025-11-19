@@ -11,8 +11,17 @@ package constant;
  */
 public class Errors {
     public String message = ""; 
-    public boolean isError = true;
+    public boolean isError;
+    public String title;
     
+    // Default: isError = true
+    public Errors(String message, String title) {
+        this.message = message;
+        this.title = title;
+        this.isError = true;
+    }
+
+    // Versi custom: bisa tentukan sendiri isError
     public Errors(String message, boolean isError) {
         this.message = message;
         this.isError = isError;

@@ -2,11 +2,15 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
  */
-package form;
+package com.tugas.quizmath_player.form;
 
-import entity.Answer;
+import com.tugas.quizmath_player.form.NilaiForm;
+import com.tugas.quizmath_player.form.LeaderboardForm;
+import com.tugas.quizmath_player.form.DaftarSiswaForm;
+import com.tugas.quizmath_player.entity.Answer;
+import com.tugas.quizmath_player.entity.QuestionManipulation;
+import com.tugas.quizmath_player.utils.MultiLineCellRenderer;
 import entity.Question;
-import java.awt.Color;
 import java.awt.Component;
 import java.awt.Image;
 import java.io.File;
@@ -19,13 +23,11 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JTable;
-import javax.swing.border.Border;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableCellRenderer;
 import javax.swing.table.TableColumnModel;
 import repository.QuestionRepository;
-import utils.MultiLineCellRenderer;
 
 /**
  *
@@ -78,9 +80,9 @@ public class SoalForm extends javax.swing.JFrame {
 
     DefaultTableModel model = new DefaultTableModel(columnNames, 0);
    
-    List<Question> questions = question_repo.getAllQuestion(this);
+    List<QuestionManipulation> questions = question_repo.getAllQuestion(this);
 
-    for (Question q : questions) {
+    for (QuestionManipulation q : questions) {
         StringBuilder correctAnswer = new StringBuilder();
         for (Answer a: q.answers) {
             if (a.correct) {
@@ -929,12 +931,12 @@ private ImageIcon resizeImage(String path, int width, int height) {
     
     private void saveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_saveActionPerformed
      if (this.selectedRow != -1) {
-        int result = JOptionPane.showConfirmDialog(
-            this,
-            "Anda telah memilih data yang ada.\n"
-          + "Apakah Anda ingin menambah data baru?\n\n"
-          + "Klik OK untuk menambah data baru.\n"
-          + "Klik Cancel jika ingin mengedit menggunakan tombol Update.",
+        int result = JOptionPane.showConfirmDialog(this, """
+                                                         Anda telah memilih data yang ada.
+                                                         Apakah Anda ingin menambah data baru?
+                                                         
+                                                         Klik OK untuk menambah data baru.
+                                                         Klik Cancel jika ingin mengedit menggunakan tombol Update.""",
             "Konfirmasi",
             JOptionPane.OK_CANCEL_OPTION,
             JOptionPane.QUESTION_MESSAGE
@@ -964,7 +966,7 @@ private ImageIcon resizeImage(String path, int width, int height) {
     answers.add(new Answer(answerCText.getText(), "C", scores[2], answerCIsCorrect.isSelected(), this.answerCImg));
     answers.add(new Answer(answerDText.getText(), "D", scores[3], answerDIsCorrect.isSelected(), this.answerDImg));
 
-    Question question = new Question(
+    QuestionManipulation question = new QuestionManipulation(
         0,
         questionTextArea.getText(),
         questionImage,
@@ -1088,18 +1090,10 @@ private ImageIcon resizeImage(String path, int width, int height) {
             for (String ans : correctAnswers) {
                 ans = ans.trim(); // buang spasi kalau ada
                 switch (ans) {
-                    case "A":
-                        answerAIsCorrect.setSelected(true);
-                        break;
-                    case "B":
-                        answerBIsCorrect.setSelected(true);
-                        break;
-                    case "C":
-                        answerCIsCorrect.setSelected(true);
-                        break;
-                    case "D":
-                        answerDIsCorrect.setSelected(true);
-                        break;
+                    case "A" -> answerAIsCorrect.setSelected(true);
+                    case "B" -> answerBIsCorrect.setSelected(true);
+                    case "C" -> answerCIsCorrect.setSelected(true);
+                    case "D" -> answerDIsCorrect.setSelected(true);
                 }
             }
              
@@ -1342,7 +1336,7 @@ private ImageIcon resizeImage(String path, int width, int height) {
     answers.add(new Answer(answerCText.getText(), "C", scores[2], answerCIsCorrect.isSelected(), this.answerCImg));
     answers.add(new Answer(answerDText.getText(), "D", scores[3], answerDIsCorrect.isSelected(), this.answerDImg));
 
-    Question question = new Question(
+    QuestionManipulation question = new QuestionManipulation(
         this.selectedIdQuestion,
         questionTextArea.getText(),
         questionImage,
