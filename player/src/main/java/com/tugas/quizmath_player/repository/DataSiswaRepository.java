@@ -19,36 +19,71 @@ import javax.swing.JOptionPane;
  */
 public class DataSiswaRepository {
     
-   public void loginSiswa(DataSiswa dataSiswa) {
-    String sqlInsert = "INSERT INTO siswa(nama, kelas_id, nis, no_absen) VALUES (?, ?, ?, ?)";
+  public boolean loginSiswa(DataSiswa dataSiswa, Component rootPane) {
+    String sqlQuery = "SELECT id, username FROM siswa WHERE username = ? AND password = ?";
 
     try (Connection conn = Database.getConnection();
-         PreparedStatement stmt = conn.prepareStatement(sqlInsert,Statement.RETURN_GENERATED_KEYS)) {
+         PreparedStatement stmt = conn.prepareStatement(sqlQuery)) {
 
-        stmt.setString(1, dataSiswa.nama);
-        stmt.setInt(2, dataSiswa.kelas_id);
-        stmt.setString(3, dataSiswa.nis);
-        stmt.setInt(4, Integer.parseInt(dataSiswa.noAbsen));
+        stmt.setString(1, dataSiswa.username);
+        stmt.setString(2, dataSiswa.password);
 
-        int rows = stmt.executeUpdate();
-        if (rows > 0) {
-            try (ResultSet rs = stmt.getGeneratedKeys()) {
-                if (rs.next()) {
-                    int siswaId = rs.getInt(1); // ambil id auto_increment
-                    System.out.println("✅ Data siswa berhasil ditambahkan dengan ID: " + siswaId);
+        try (ResultSet rs = stmt.executeQuery()) {
+            if (rs.next()) {
+                int siswaId = rs.getInt("id");
+                String name = rs.getString("username");
+                System.out.println("✅ Login berhasil: " + name);
 
-                    // langsung set session
-                    Session.setSession(siswaId, dataSiswa.nama);
-                }
+                // langsung set session
+                Session.setSession(siswaId, name);
+                return true;
+            } else {
+               JOptionPane.showMessageDialog(rootPane,"⚠️ Username atau password salah");
+               return false;
             }
-        } else {
-            System.out.println("⚠️ Tidak ada data yang ditambahkan");
         }
 
     } catch (SQLException e) {
-        System.err.println("❌ Gagal insert siswa: " + e.getMessage());
+        System.err.println("❌ Gagal login siswa: " + e.getMessage());
+    }
+    return false;
+}
+  
+ public DataSiswa getSiswaById(int id, Component rootPane) {
+    String sqlQuery = "SELECT  s.username, s.no_absen, s.nama, s.nis, k.kelas " +
+                      "FROM siswa s " +
+                      "INNER JOIN kelas k ON s.kelas_id = k.id " +
+                      "WHERE s.id = ?";
+
+    try (Connection conn = Database.getConnection();
+         PreparedStatement stmt = conn.prepareStatement(sqlQuery)) {
+
+        stmt.setInt(1, id);
+
+        try (ResultSet rs = stmt.executeQuery()) {
+            if (rs.next()) {
+                // Ambil data dari ResultSet
+                String username = rs.getString("username");
+                String absen = rs.getString("no_absen");
+                String name = rs.getString("nama");
+                String nis = rs.getString("nis");
+                String kelas = rs.getString("kelas");
+
+                // Buat objek DataSiswa
+                return new DataSiswa(username, absen, name, nis, kelas);
+            } else {
+                JOptionPane.showMessageDialog(rootPane, "⚠️ Siswa dengan ID " + id + " tidak ditemukan");
+                return null;
+            }
+        }
+
+    } catch (SQLException e) {
+        System.err.println("❌ Gagal mengambil data siswa: " + e.getMessage());
+        return null;
     }
 }
+
+
 
    
   public List<Kelas> getAllKelas() {
@@ -78,7 +113,7 @@ public class DataSiswaRepository {
 public List<Siswa> getAllSiswa(Component parentComponent) {
         List<Siswa> result = new ArrayList<>();
         String sql = """
-            SELECT s.id, s.nama, s.no_absen, s.nis, k.kelas,k.jurusan
+            SELECT s.id, s.nama,s.username,s.password, s.no_absen, s.nis, k.kelas,k.jurusan
             FROM siswa s
             INNER JOIN kelas k ON s.kelas_id = k.id
         """;
@@ -91,11 +126,13 @@ public List<Siswa> getAllSiswa(Component parentComponent) {
                 int id = rs.getInt("id");
                 String nama = rs.getString("nama");
                 String kelas = rs.getString("kelas");
+                 String username = rs.getString("username");
+                String password = rs.getString("password");
                 String jurusan = rs.getString("jurusan");
                 String nis = rs.getString("nis");
                 int noAbsen = rs.getInt("no_absen");
                 
-               Siswa siswa = new Siswa(id,nama,nis,noAbsen,kelas,jurusan);
+               Siswa siswa = new Siswa(id,nama,username,password,nis,noAbsen,kelas,jurusan);
                result.add(siswa);
             }
 

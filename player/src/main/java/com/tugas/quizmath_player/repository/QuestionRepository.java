@@ -2,7 +2,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-package repository;
+package com.tugas.quizmath_player.repository;
 
 import com.tugas.quizmath_player.entity.Answer;
 import com.tugas.quizmath_player.entity.QuestionManipulation;

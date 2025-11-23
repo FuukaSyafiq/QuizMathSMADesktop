@@ -4,6 +4,7 @@
  */
 package com.tugas.quizmath_player.form;
 
+import com.tugas.quizmath_player.helper.BackgroundPanel;
 import javax.swing.*;
 import java.awt.*;
 /**
@@ -12,53 +13,54 @@ import java.awt.*;
  */
 public class LoadingForm extends javax.swing.JFrame {
     
-    private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(LoadingForm.class.getName());
      private javax.swing.JProgressBar progressBar;
       private javax.swing.JLabel logoLabel;
     /**
      * Creates new form LoadingForm
      */
-    public LoadingForm() {
-        initComponents();
-       
+     public LoadingForm() {
+        initComponents(); // tetapi layoutnya akan kita replace
+
         setTitle("Loading...");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setSize(600, 600);
-        setLocationRelativeTo(null); // biar form di tengah layar
-        setLayout(new BorderLayout());
+        setSize(500, 500);
+        setLocationRelativeTo(null);
 
-           // 🚀 pakai panel custom sebagai background
-      Image bg = new ImageIcon(getClass().getResource("/images/ijmnenlogo.jpg")).getImage();
-        JPanel centerPanel = new helper.BackgroundPanel(bg, false, 0);  
-centerPanel.setLayout(new GridBagLayout()); // biar bisa taruh komponen di tengah
+        // 🔥 Ambil gambar background
+        Image bg = new ImageIcon(getClass().getResource("/images/logosekul.jpeg")).getImage();
 
-        // Progress bar di bawah
+        // 🔥 Ganti contentPane dengan BackgroundPanel agar full
+        BackgroundPanel background = new BackgroundPanel(bg, true, 0);
+        background.setLayout(new BorderLayout());
+        setContentPane(background);
+
+        // Tambahkan progress bar
         progressBar = new JProgressBar(0, 100);
-        progressBar.setStringPainted(true); // biar ada persen
+        progressBar.setStringPainted(true);
         progressBar.setPreferredSize(new Dimension(600, 30));
 
-        // Tambahkan ke frame
-        add(centerPanel, BorderLayout.CENTER);
         add(progressBar, BorderLayout.SOUTH);
+
+        revalidate();
     }
 
-     public void startLoading() {
+    public void startLoading() {
         new Thread(() -> {
             for (int i = 0; i <= 100; i++) {
                 final int value = i;
                 SwingUtilities.invokeLater(() -> progressBar.setValue(value));
-                try {
-                    Thread.sleep(10); // delay simulasi loading
-                } catch (InterruptedException ignored) {}
+                
+                try { Thread.sleep(50); } catch (InterruptedException ignored) {}
             }
-            // setelah selesai, tampilkan form lain atau tutup
+            
             SwingUtilities.invokeLater(() -> {
                 dispose();
                 new LoginPicker().setVisible(true);
-             //   JOptionPane.showMessageDialog(null, "Loading selesai!");
             });
         }).start();
     }
+
+
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always

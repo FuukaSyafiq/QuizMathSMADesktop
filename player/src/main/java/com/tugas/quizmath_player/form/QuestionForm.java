@@ -1,11 +1,13 @@
 package com.tugas.quizmath_player.form;
 
-import repository.QuestionRepository;
+import com.tugas.quizmath_player.repository.QuestionRepository;
 import entity.Question;
 import helper.Session;
+import java.awt.HeadlessException;
 import java.awt.Image;
 import java.util.Collections;
 import java.util.List;
+import java.util.concurrent.ExecutionException;
 import javax.swing.ImageIcon;
 import javax.swing.JCheckBox;
 import javax.swing.JFrame;
@@ -31,8 +33,6 @@ public class QuestionForm extends javax.swing.JFrame {
     private Question currentQuestion;
     private Timer globalTimer;
     private int totalTimeLeft; // dalam detik
-
-    private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(QuestionForm.class.getName());
 
     /**
      * Creates new form QuestionForm
@@ -63,8 +63,8 @@ public class QuestionForm extends javax.swing.JFrame {
                 Collections.shuffle(randomizedIds);
                 startGlobalTimer(100);
                 loadQuestion();
-            } catch (Exception ex) {
-                ex.printStackTrace();
+            } catch (HeadlessException | InterruptedException | ExecutionException ex) {
+                JOptionPane.showMessageDialog(QuestionForm.this, ex.getMessage());
             }
         }
     }.execute();
@@ -289,7 +289,6 @@ public class QuestionForm extends javax.swing.JFrame {
         questionTextArea = new javax.swing.JTextArea();
         noSoal = new javax.swing.JLabel();
         jButton2 = new javax.swing.JButton();
-        jPanel10 = new javax.swing.JPanel();
         jButton1 = new javax.swing.JButton();
         jPanel9 = new javax.swing.JPanel();
         checkBoxA = new javax.swing.JCheckBox();
@@ -307,11 +306,18 @@ public class QuestionForm extends javax.swing.JFrame {
         jScrollPane2.setHorizontalScrollBarPolicy(javax.swing.ScrollPaneConstants.HORIZONTAL_SCROLLBAR_ALWAYS);
         jScrollPane2.setVerticalScrollBarPolicy(javax.swing.ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
 
-        jPanel8.setBackground(new java.awt.Color(78, 97, 211));
+        jPanel8.setBackground(new java.awt.Color(125, 168, 198));
         jPanel8.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
 
+        jPanel7.setBackground(new java.awt.Color(125, 168, 198));
+
+        answerBImg.setBackground(new java.awt.Color(255, 255, 255));
+        answerBImg.setFont(new java.awt.Font("sansserif", 1, 14)); // NOI18N
+        answerBImg.setForeground(new java.awt.Color(255, 255, 255));
         answerBImg.setText("jLabel4");
 
+        checkBoxC.setFont(new java.awt.Font("sansserif", 1, 13)); // NOI18N
+        checkBoxC.setForeground(new java.awt.Color(255, 255, 255));
         checkBoxC.setText("B");
         checkBoxC.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -338,6 +344,9 @@ public class QuestionForm extends javax.swing.JFrame {
                 .addContainerGap())
         );
 
+        jPanel2.setBackground(new java.awt.Color(255, 255, 255));
+
+        timeLabel.setFont(new java.awt.Font("sansserif", 1, 13)); // NOI18N
         timeLabel.setText("jLabel1");
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
@@ -363,10 +372,16 @@ public class QuestionForm extends javax.swing.JFrame {
                 .addGap(35, 35, 35))
         );
 
-        questionImgLabel.setText("Gambar");
+        jPanel1.setBackground(new java.awt.Color(255, 255, 255));
+
+        jPanel3.setBackground(new java.awt.Color(125, 168, 198));
+
+        questionImgLabel.setBackground(new java.awt.Color(255, 255, 255));
 
         questionTextArea.setEditable(false);
+        questionTextArea.setBackground(new java.awt.Color(255, 255, 255));
         questionTextArea.setColumns(20);
+        questionTextArea.setFont(new java.awt.Font("sansserif", 0, 18)); // NOI18N
         questionTextArea.setLineWrap(true);
         questionTextArea.setRows(5);
         questionTextArea.setWrapStyleWord(true);
@@ -380,9 +395,9 @@ public class QuestionForm extends javax.swing.JFrame {
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel3Layout.createSequentialGroup()
                 .addGap(12, 12, 12)
-                .addComponent(questionImgLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 238, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 657, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(questionImgLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 196, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 693, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(8, Short.MAX_VALUE))
         );
         jPanel3Layout.setVerticalGroup(
@@ -395,6 +410,7 @@ public class QuestionForm extends javax.swing.JFrame {
                 .addContainerGap())
         );
 
+        noSoal.setFont(new java.awt.Font("sansserif", 1, 24)); // NOI18N
         noSoal.setText("jLabel1");
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
@@ -420,6 +436,9 @@ public class QuestionForm extends javax.swing.JFrame {
                 .addContainerGap())
         );
 
+        jButton2.setBackground(new java.awt.Color(74, 123, 190));
+        jButton2.setFont(new java.awt.Font("sansserif", 1, 14)); // NOI18N
+        jButton2.setForeground(new java.awt.Color(255, 255, 255));
         jButton2.setText("Previous");
         jButton2.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -427,17 +446,9 @@ public class QuestionForm extends javax.swing.JFrame {
             }
         });
 
-        javax.swing.GroupLayout jPanel10Layout = new javax.swing.GroupLayout(jPanel10);
-        jPanel10.setLayout(jPanel10Layout);
-        jPanel10Layout.setHorizontalGroup(
-            jPanel10Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 192, Short.MAX_VALUE)
-        );
-        jPanel10Layout.setVerticalGroup(
-            jPanel10Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 0, Short.MAX_VALUE)
-        );
-
+        jButton1.setBackground(new java.awt.Color(74, 123, 190));
+        jButton1.setFont(new java.awt.Font("sansserif", 1, 14)); // NOI18N
+        jButton1.setForeground(new java.awt.Color(255, 255, 255));
         jButton1.setText("Next");
         jButton1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -445,6 +456,10 @@ public class QuestionForm extends javax.swing.JFrame {
             }
         });
 
+        jPanel9.setBackground(new java.awt.Color(125, 168, 198));
+
+        checkBoxA.setFont(new java.awt.Font("sansserif", 1, 13)); // NOI18N
+        checkBoxA.setForeground(new java.awt.Color(255, 255, 255));
         checkBoxA.setText("A");
         checkBoxA.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -452,6 +467,8 @@ public class QuestionForm extends javax.swing.JFrame {
             }
         });
 
+        answerAImg.setFont(new java.awt.Font("sansserif", 1, 14)); // NOI18N
+        answerAImg.setForeground(new java.awt.Color(255, 255, 255));
         answerAImg.setText("jLabel1");
 
         javax.swing.GroupLayout jPanel9Layout = new javax.swing.GroupLayout(jPanel9);
@@ -470,9 +487,13 @@ public class QuestionForm extends javax.swing.JFrame {
                 .addComponent(checkBoxA, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(answerAImg, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(16, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
+        jPanel6.setBackground(new java.awt.Color(125, 168, 198));
+
+        checkBoxB.setFont(new java.awt.Font("sansserif", 1, 13)); // NOI18N
+        checkBoxB.setForeground(new java.awt.Color(255, 255, 255));
         checkBoxB.setText("C");
         checkBoxB.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -480,7 +501,11 @@ public class QuestionForm extends javax.swing.JFrame {
             }
         });
 
+        answerCImg.setBackground(new java.awt.Color(153, 255, 153));
+        answerCImg.setFont(new java.awt.Font("sansserif", 1, 14)); // NOI18N
+        answerCImg.setForeground(new java.awt.Color(255, 255, 255));
         answerCImg.setText("jLabel3");
+        answerCImg.setFocusTraversalPolicyProvider(true);
 
         javax.swing.GroupLayout jPanel6Layout = new javax.swing.GroupLayout(jPanel6);
         jPanel6.setLayout(jPanel6Layout);
@@ -501,10 +526,16 @@ public class QuestionForm extends javax.swing.JFrame {
                 .addContainerGap())
         );
 
+        levelLabel.setFont(new java.awt.Font("sansserif", 1, 18)); // NOI18N
+        levelLabel.setForeground(new java.awt.Color(255, 255, 255));
         levelLabel.setText("jLabel1");
 
+        answerDImg.setFont(new java.awt.Font("sansserif", 1, 14)); // NOI18N
+        answerDImg.setForeground(new java.awt.Color(255, 255, 255));
         answerDImg.setText("jLabel2");
 
+        checkBoxD.setFont(new java.awt.Font("sansserif", 1, 13)); // NOI18N
+        checkBoxD.setForeground(new java.awt.Color(255, 255, 255));
         checkBoxD.setText("D");
         checkBoxD.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -526,16 +557,13 @@ public class QuestionForm extends javax.swing.JFrame {
                             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel8Layout.createSequentialGroup()
                                 .addGap(120, 120, 120)
                                 .addComponent(jPanel9, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                        .addGap(231, 231, 231)
+                        .addGap(228, 228, 228)
                         .addGroup(jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jPanel7, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addGroup(jPanel8Layout.createSequentialGroup()
-                                .addGroup(jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                    .addComponent(checkBoxD, javax.swing.GroupLayout.DEFAULT_SIZE, 192, Short.MAX_VALUE)
-                                    .addComponent(answerDImg, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(jPanel10, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                            .addGroup(jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                .addComponent(checkBoxD, javax.swing.GroupLayout.DEFAULT_SIZE, 192, Short.MAX_VALUE)
+                                .addComponent(answerDImg, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 93, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(18, 18, 18)
                         .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 108, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -561,15 +589,14 @@ public class QuestionForm extends javax.swing.JFrame {
                 .addGroup(jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel8Layout.createSequentialGroup()
                         .addGroup(jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jPanel9, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jPanel7, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(31, 31, 31)
+                            .addComponent(jPanel7, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jPanel9, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(36, 36, 36)
                         .addGroup(jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addGroup(jPanel8Layout.createSequentialGroup()
                                 .addComponent(checkBoxD, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(answerDImg, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                            .addComponent(jPanel10, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(jPanel6, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
                     .addGroup(jPanel8Layout.createSequentialGroup()
                         .addGap(404, 404, 404)
@@ -586,8 +613,7 @@ public class QuestionForm extends javax.swing.JFrame {
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(15, Short.MAX_VALUE)
-                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 1359, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 1374, Short.MAX_VALUE)
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -638,7 +664,6 @@ public class QuestionForm extends javax.swing.JFrame {
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
     private javax.swing.JPanel jPanel1;
-    private javax.swing.JPanel jPanel10;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel jPanel6;

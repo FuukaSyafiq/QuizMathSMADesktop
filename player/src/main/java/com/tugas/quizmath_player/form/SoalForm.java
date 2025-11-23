@@ -9,6 +9,7 @@ import com.tugas.quizmath_player.form.LeaderboardForm;
 import com.tugas.quizmath_player.form.DaftarSiswaForm;
 import com.tugas.quizmath_player.entity.Answer;
 import com.tugas.quizmath_player.entity.QuestionManipulation;
+import com.tugas.quizmath_player.repository.QuestionRepository;
 import com.tugas.quizmath_player.utils.MultiLineCellRenderer;
 import entity.Question;
 import java.awt.Component;
@@ -27,7 +28,6 @@ import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableCellRenderer;
 import javax.swing.table.TableColumnModel;
-import repository.QuestionRepository;
 
 /**
  *
