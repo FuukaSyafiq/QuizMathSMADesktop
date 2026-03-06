@@ -1,104 +1,145 @@
-# 🧠 LibreQuiz
+# QuizMathSMA
 
-**LibreQuiz** is a native desktop quiz platform designed to promote honesty and prevent cheating during quizzes or exams.  
-Built with **Java (Swing)** and **FlatLaf**, it provides a modern, cross-platform UI experience optimized for **Linux** systems.
-
----
-
-## ✨ Key Features
-
-- 🔒 **Anti-cheat protection** — keyboard locking and restricted shortcuts prevent switching windows or copying answers.
-- 🧠 **Interactive quiz interface** — designed for students and classrooms.
-- 🧩 **Modular design** — includes separate Admin and Player applications.
-- 💾 **MySQL database integration** — secure storage for questions, answers, and results.
-- 🖥️ **Native Linux support** — tested and optimized for major Linux desktop environments (GNOME, LXQt, XFCE, etc).
-- 🎨 **Modern UI** — FlatLaf provides a clean, native look consistent with current desktop themes.
+**QuizMathSMA** is a desktop quiz application designed to help high school students learn mathematics, particularly topics on 2D shapes and 3D solids. This application is built using **Java Swing** for the user interface and **MySQL** as the database to store questions, answers, and student scores.
 
 ---
 
-## 🏗️ Project Structure
+## Main Features
+
+- **Admin Login** - Teachers can login to manage questions and view quiz results
+- **Student Login** - Students can login to take quizzes
+- **Class Management** - Add and view class data
+- **Student Management** - Add and view student data
+- **Question Management** - Add, edit, and delete math questions with image support
+- **Interactive Quiz** - Students can answer questions with a timer
+- **Multiple Choice** - Supports single choice and multiple choice questions
+- **Leaderboard** - Displays student rankings based on scores
+- **Score History** - Teachers can view student scores
+
+---
+
+## Technologies Used
+
+| Category | Technology |
+|----------|-----------|
+| Programming Language | Java 21 |
+| UI Framework | Java Swing + FlatLaf |
+| Build System | Apache Maven |
+| Database | MySQL |
+| ORM | Hibernate |
+| Date Picker Library | LGoodDatePicker |
+
+---
+
+## Project Structure
 
 ```
-LibreQuiz/
-├── admin/ # Admin interface for managing questions, sessions, and users
-│ ├── src/
-│ └── pom.xml
-├── player/ # Player (student) interface for taking quizzes
-│ ├── src/
-│ └── pom.xml
-└── Makefile # Simple unified build & run system for both projects
+quizmath_sma/
+├── player/                  # Main application (Admin + Player)
+│   ├── src/main/java/       # Java source code
+│   ├── src/main/resources/  # Resources like images
+│   └── pom.xml              # Maven configuration
+├── init.sql                 # SQL script for database setup
+├── compose.yml              # Docker Compose for MySQL
+└── Makefile                 # Build & Run system
 ```
 
-## 🧩 Why mix Java + C?
-
-Even though Java is portable and powerful, there are times when you want low-level system control — especially for your case (anti-cheat / keyboard locking).
-
-You might need features that Java alone can’t access directly, such as:
-
-Intercepting keyboard and mouse events globally
-
-Blocking Alt+Tab, Ctrl+Alt+T, or Super (Windows) key
-
-Talking to Linux input devices (/dev/input/event*)
-
-Using X11 or Wayland APIs for window focus control
-
-Java doesn’t expose these natively, but C (or C++) does — so you can use JNI (Java Native Interface) to bridge between them.
-
-
 ---
 
-## ⚙️ Requirements
+## How to Run
 
-- **Java 21** or higher  
-- **Apache Maven 3.9+**  
-- **MySQL** (for backend storage)
+### Prerequisites
 
----
+1. **Java 21** or higher
+2. **Apache Maven 3.9+**
+3. **Docker** (to run MySQL via Docker Compose)
 
-## 🚀 Build & Run
+### Steps
 
-LibreQuiz is split into two Maven-based subprojects — `admin` and `player`.  
-You can build and run each using the included **Makefile**:
+#### 1. Clone and Navigate to Project Directory
 
-### Run the Admin App
 ```bash
-make admin
+cd QuizMathSMADesktop
 ```
 
-### Run the Player App
+#### 2. Run MySQL Using Docker Compose
+
+```bash
+make db
 ```
+
+Or alternatively:
+
+```bash
+docker compose up -d
+```
+
+This will run the MySQL container with:
+- Port: 3306
+- Username: root
+- Password: root
+
+#### 3. Setup Database
+
+Run the SQL script to create tables and initial data:
+
+```bash
+docker exec -i mysqlquizmath mysql -uroot -proot < init.sql
+```
+
+#### 4. Build and Run the Application
+
+```bash
 make player
 ```
 
-### Clean all builds
+Or manually:
+
+```bash
+cd player
+mvn clean package
+java -jar target/quizmath_player-1.0-SNAPSHOT.jar
 ```
-make clean
-```
 
-Both apps will automatically package into standalone fat JARs using the maven-shade-plugin
-.
-No extra dependencies or setup required — just java -jar.
+---
 
-🧰 Technologies Used
-Category	Technology
-Language	Java 21
-Build System	Apache Maven
-UI Framework	Swing + FlatLaf
-Database	MySQL
-Packaging	Maven Shade Plugin
-OS Target	Linux (tested on Ubuntu, Arch, Fedora)
+## Default Accounts
 
-🧱 Architecture Overview
+After running `init.sql`, the following accounts are available:
 
-Admin App
-Allows teachers to create, edit, and manage quiz content and participants.
+| Role | Username | Password |
+|------|----------|----------|
+| Admin | admin | admin123 |
 
-Player App
-Provides a restricted environment for students to take quizzes — disables window switching and certain keyboard shortcuts to ensure fair play.
+For students, you can use existing usernames in the database such as:
+- afiq01 / pass123
+- budi02 / pass123
+- citra03 / pass123
+- etc (see `init.sql` for the full list)
 
-🧑‍💻 Contributing
+---
 
-Contributions and feature suggestions are welcome!
-Feel free to open an issue or submit a pull request on GitHub.
+## How to Use
 
+### For Admin/Teachers:
+
+1. Login with username `admin` and password `admin123`
+2. From the admin dashboard, you can:
+   - Manage classes
+   - Manage students
+   - Add/edit/delete questions
+   - View leaderboard
+   - View student score history
+
+### For Students:
+
+1. Login with student username and password
+2. Select quiz level (Easy, Normal, Hard)
+3. Answer the given questions
+4. View quiz results after completion
+
+---
+
+## License
+
+This project was created for school assignment purposes, but you are free to use it as well.
