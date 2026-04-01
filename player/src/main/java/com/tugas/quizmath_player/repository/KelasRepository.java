@@ -33,4 +33,61 @@ public class KelasRepository {
             return new ArrayList<>();
         }
     }
+
+    public void insertKelas(String namaKelas, String jurusan, Component parentComponent) {
+        org.hibernate.Transaction transaction = null;
+        try (Session session = Database.getSessionFactory().openSession()) {
+            transaction = session.beginTransaction();
+            Kelas kelas = new Kelas(namaKelas, jurusan);
+            session.persist(kelas);
+            transaction.commit();
+        } catch (Exception e) {
+            if (transaction != null) transaction.rollback();
+            e.printStackTrace();
+            JOptionPane.showMessageDialog(parentComponent, "Gagal menambahkan kelas/jurusan: " + e.getMessage(),
+                    "Error", JOptionPane.ERROR_MESSAGE);
+        }
+    }
+
+    public void updateKelas(int id, String namaKelas, String jurusan, Component parentComponent) {
+        org.hibernate.Transaction transaction = null;
+        try (Session session = Database.getSessionFactory().openSession()) {
+            transaction = session.beginTransaction();
+            Kelas kelas = session.get(Kelas.class, id);
+            if (kelas != null) {
+                kelas.setKelas(namaKelas);
+                kelas.setJurusan(jurusan);
+                session.merge(kelas);
+                transaction.commit();
+            } else {
+                JOptionPane.showMessageDialog(parentComponent, "Data tidak ditemukan!",
+                        "Error", JOptionPane.ERROR_MESSAGE);
+            }
+        } catch (Exception e) {
+            if (transaction != null) transaction.rollback();
+            e.printStackTrace();
+            JOptionPane.showMessageDialog(parentComponent, "Gagal mengupdate kelas/jurusan: " + e.getMessage(),
+                    "Error", JOptionPane.ERROR_MESSAGE);
+        }
+    }
+
+    public void deleteKelas(int id, Component parentComponent) {
+        org.hibernate.Transaction transaction = null;
+        try (Session session = Database.getSessionFactory().openSession()) {
+            transaction = session.beginTransaction();
+            Kelas kelas = session.get(Kelas.class, id);
+            if (kelas != null) {
+                session.remove(kelas);
+                transaction.commit();
+            } else {
+                JOptionPane.showMessageDialog(parentComponent, "Data tidak ditemukan!",
+                        "Error", JOptionPane.ERROR_MESSAGE);
+            }
+        } catch (Exception e) {
+            if (transaction != null) transaction.rollback();
+            e.printStackTrace();
+            JOptionPane.showMessageDialog(parentComponent, "Gagal menghapus kelas/jurusan: " + e.getMessage(),
+                    "Error", JOptionPane.ERROR_MESSAGE);
+        }
+    }
 }

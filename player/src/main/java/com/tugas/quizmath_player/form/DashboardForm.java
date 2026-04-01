@@ -20,6 +20,8 @@ public class DashboardForm extends JFrame {
     private ManageAdminForm manageAdminPanel;
     private SettingsForm settingsPanel;
 
+    private JurusanForm jurusanPanel;
+
     public DashboardForm() {
         setTitle("Dashboard Admin");
         setSize(1200, 700);
@@ -59,11 +61,13 @@ public class DashboardForm extends JFrame {
         daftarSiswaPanel = new DaftarSiswaForm();
         manageAdminPanel = new ManageAdminForm();
         settingsPanel = new SettingsForm();
+        jurusanPanel = new JurusanForm();
 
         contentPanel.add(soalPanel, "Soal");
         contentPanel.add(leaderboardPanel, "Leaderboard");
         contentPanel.add(nilaiPanel, "Nilai");
         contentPanel.add(daftarSiswaPanel, "DaftarSiswa");
+        contentPanel.add(jurusanPanel, "Jurusan");
         contentPanel.add(manageAdminPanel, "ManageAdmin");
         contentPanel.add(settingsPanel, "Settings");
     }
@@ -73,6 +77,7 @@ public class DashboardForm extends JFrame {
         sidebar.addLeaderboardListener(e -> cardLayout.show(contentPanel, "Leaderboard"));
         sidebar.addNilaiListener(e -> cardLayout.show(contentPanel, "Nilai"));
         sidebar.addDaftarSiswaListener(e -> cardLayout.show(contentPanel, "DaftarSiswa"));
+        sidebar.addJurusanListener(e -> cardLayout.show(contentPanel, "Jurusan"));
         sidebar.addManageAdminListener(e -> cardLayout.show(contentPanel, "ManageAdmin"));
         sidebar.addSettingsListener(e -> cardLayout.show(contentPanel, "Settings"));
         sidebar.addLogoutListener(e -> logout());

@@ -11,6 +11,7 @@ public class Sidebar extends JPanel {
     private JButton btnLeaderboard;
     private JButton btnNilai;
     private JButton btnDaftarSiswa;
+    private JButton btnJurusan;
     private JButton btnManageAdmin;
     private JButton btnSettings;
     private JButton btnLogout;
@@ -33,6 +34,7 @@ public class Sidebar extends JPanel {
         btnLeaderboard = createMenuButton("Leaderboard");
         btnNilai = createMenuButton("Nilai");
         btnDaftarSiswa = createMenuButton("Daftar Siswa");
+        btnJurusan = createMenuButton("Kelas & Jurusan");
         btnManageAdmin = createMenuButton("Kelola Admin");
         btnSettings = createMenuButton("Pengaturan");
         btnLogout = createMenuButton("Logout");
@@ -45,6 +47,8 @@ public class Sidebar extends JPanel {
         add(btnNilai);
         add(Box.createRigidArea(new Dimension(0, 10)));
         add(btnDaftarSiswa);
+        add(Box.createRigidArea(new Dimension(0, 10)));
+        add(btnJurusan);
         add(Box.createRigidArea(new Dimension(0, 10)));
         add(btnManageAdmin);
         add(Box.createRigidArea(new Dimension(0, 10)));
@@ -95,6 +99,10 @@ public class Sidebar extends JPanel {
 
     public void addDaftarSiswaListener(ActionListener listener) {
         btnDaftarSiswa.addActionListener(listener);
+    }
+    
+    public void addJurusanListener(ActionListener listener) {
+        btnJurusan.addActionListener(listener);
     }
     
     public void addManageAdminListener(ActionListener listener) {

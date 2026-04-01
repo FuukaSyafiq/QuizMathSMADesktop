@@ -1,6 +1,6 @@
 services:
   mysqldb:
-    image: mysql:9.5.0
+    image: mysql:9.6
     container_name: mysqlquizmath
     environment:
       MYSQL_ROOT_PASSWORD: root

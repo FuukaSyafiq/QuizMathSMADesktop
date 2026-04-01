@@ -56,12 +56,21 @@ public class LoginForm extends JFrame {
         loginPanel.setLayout(new BoxLayout(loginPanel, BoxLayout.Y_AXIS));
 
         // Icon/Logo
-        JLabel iconLabel = new JLabel("😵‍💫");
-        iconLabel.setFont(new Font("Open Sans", Font.PLAIN, 80));
+        ImageIcon originalIcon = new ImageIcon("smkantartika2.jpg");
+        Image scaledImage = originalIcon.getImage().getScaledInstance(100, 100, Image.SCALE_SMOOTH);
+        JLabel iconLabel = new JLabel(new ImageIcon(scaledImage));
         iconLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
         loginPanel.add(iconLabel);
 
-        loginPanel.add(Box.createRigidArea(new Dimension(0, 20)));
+        loginPanel.add(Box.createRigidArea(new Dimension(0, 10)));
+        
+        JLabel smkLabel = new JLabel("For SMK ANTARTIKA 2 SIDOARJO");
+        smkLabel.setFont(new Font("Segoe UI", Font.BOLD, 14));
+        smkLabel.setForeground(new Color(41, 128, 185));
+        smkLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
+        loginPanel.add(smkLabel);
+
+        loginPanel.add(Box.createRigidArea(new Dimension(0, 10)));
 
         // Title
         JLabel titleLabel = new JLabel("Fuse Math");
