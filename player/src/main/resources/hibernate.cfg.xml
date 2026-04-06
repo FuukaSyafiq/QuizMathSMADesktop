@@ -42,6 +42,7 @@
         <mapping class="com.tugas.quizmath_player.entity.QuestionImage"/>
         <mapping class="com.tugas.quizmath_player.entity.SiswaAnswer"/>
         <mapping class="com.tugas.quizmath_player.entity.FinalScore"/>
+        <mapping class="com.tugas.quizmath_player.entity.QuizSetting"/>
         <!-- Add other entities here later -->
 
     </session-factory>

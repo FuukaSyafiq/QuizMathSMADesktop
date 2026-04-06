@@ -44,6 +44,8 @@ public class QuizQuestionSiswa extends JFrame {
 
 	public QuizQuestionSiswa(List<QuizQuestion> questions) {
 		this.question_repo = new QuestionRepository();
+		com.tugas.quizmath_player.repository.QuizSettingRepository setting_repo = new com.tugas.quizmath_player.repository.QuizSettingRepository();
+		this.totalTimeLeft = setting_repo.getQuizTimeLimit() * 60;
 		initializeQuestions(questions); // Load dummy questions
 		this.fscore_repo = new FinalScoreRepository();
 		this.siswaAnswer_repo = new SiswaAnswerRepository();
@@ -53,18 +55,33 @@ public class QuizQuestionSiswa extends JFrame {
 		this.questions = questions;
 		// Panel utama dengan gradient background
 		JPanel mainPanel = new JPanel() {
+			private Image backgroundImage;
+			{
+				try {
+					java.io.File file1 = new java.io.File("mathbackground.jpg");
+					java.io.File file2 = new java.io.File("../mathbackground.jpg");
+					if (file1.exists()) {
+						backgroundImage = javax.imageio.ImageIO.read(file1);
+					} else if (file2.exists()) {
+						backgroundImage = javax.imageio.ImageIO.read(file2);
+					} else {
+						java.net.URL imgUrl = getClass().getResource("/mathbackground.jpg");
+						if (imgUrl != null) {
+							backgroundImage = javax.imageio.ImageIO.read(imgUrl);
+						} else {
+							System.err.println("Warning: mathbackground.jpg tidak ditemukan!");
+						}
+					}
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			}
 			@Override
 			protected void paintComponent(Graphics g) {
 				super.paintComponent(g);
-				Graphics2D g2d = (Graphics2D) g;
-				g2d.setRenderingHint(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_QUALITY);
-				int w = getWidth();
-				int h = getHeight();
-				Color color1 = new Color(52, 152, 219);
-				Color color2 = new Color(41, 128, 185);
-				GradientPaint gp = new GradientPaint(0, 0, color1, 0, h, color2);
-				g2d.setPaint(gp);
-				g2d.fillRect(0, 0, w, h);
+				if (backgroundImage != null) {
+					g.drawImage(backgroundImage, 0, 0, getWidth(), getHeight(), this);
+				}
 			}
 		};
 		mainPanel.setLayout(new BorderLayout(20, 20));
@@ -87,13 +104,15 @@ public class QuizQuestionSiswa extends JFrame {
 		centerTimerPanel.setLayout(new BoxLayout(centerTimerPanel, BoxLayout.Y_AXIS));
 		centerTimerPanel.setOpaque(false);
 
-		timerLabel = new JLabel("Waktu: 10:00");
+		int initialMins = totalTimeLeft / 60;
+		int initialSecs = totalTimeLeft % 60;
+		timerLabel = new JLabel(String.format("Waktu: %02d:%02d", initialMins, initialSecs));
 		timerLabel.setFont(new Font("Arial", Font.BOLD, 32));
 		timerLabel.setForeground(Color.WHITE);
 		timerLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
 
-		timeProgress = new JProgressBar(0, 600);
-		timeProgress.setValue(600);
+		timeProgress = new JProgressBar(0, totalTimeLeft);
+		timeProgress.setValue(totalTimeLeft);
 		timeProgress.setPreferredSize(new Dimension(300, 20));
 		timeProgress.setMaximumSize(new Dimension(300, 20));
 		timeProgress.setAlignmentX(Component.CENTER_ALIGNMENT);
@@ -173,7 +192,7 @@ public class QuizQuestionSiswa extends JFrame {
 			answerCheckBoxes[i].setCursor(new Cursor(Cursor.HAND_CURSOR));
 
 			answerLabels[i] = new JLabel("", SwingConstants.CENTER);
-			answerLabels[i].setFont(new Font("Arial", Font.PLAIN, 16));
+			answerLabels[i].setFont(new Font("Arial", Font.PLAIN, 30));
 			answerLabels[i].setForeground(new Color(52, 73, 94));
 
 			answerPanel.add(answerCheckBoxes[i], BorderLayout.NORTH);

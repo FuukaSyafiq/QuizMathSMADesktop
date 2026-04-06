@@ -18,12 +18,16 @@ import javax.swing.JPasswordField;
 public class SettingsForm extends JPanel {
 
     private AdminRepository adminRepo;
+    private com.tugas.quizmath_player.repository.QuizSettingRepository settingRepo;
     private JPasswordField txtOldPassword, txtNewPassword, txtConfirmPassword;
-    private JButton btnSave, btnCancel;
+    private javax.swing.JSpinner txtTimeLimit;
+    private JButton btnSavePassword, btnCancelPassword, btnSaveTime;
 
     public SettingsForm() {
         this.adminRepo = new AdminRepository();
+        this.settingRepo = new com.tugas.quizmath_player.repository.QuizSettingRepository();
         initComponents();
+        loadSettings();
     }
 
     private void initComponents() {
@@ -32,83 +36,140 @@ public class SettingsForm extends JPanel {
         setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
 
         // Title
-        JLabel title = new JLabel("Pengaturan Akun");
+        JLabel title = new JLabel("Pengaturan");
         title.setFont(new Font("Arial", Font.BOLD, 24));
         add(title, BorderLayout.NORTH);
 
-        // Form Panel
-        JPanel formPanel = new JPanel(new GridBagLayout());
-        formPanel.setBorder(BorderFactory.createTitledBorder("Ubah Password"));
-        formPanel.setBackground(Color.WHITE);
-        formPanel.setMaximumSize(new java.awt.Dimension(500, 300));
+        JPanel mainWrapper = new JPanel();
+        mainWrapper.setLayout(new javax.swing.BoxLayout(mainWrapper, javax.swing.BoxLayout.Y_AXIS));
+        mainWrapper.setOpaque(false);
+
+        // =======================
+        // Form Panel: Password
+        // =======================
+        JPanel passwordPanel = new JPanel(new GridBagLayout());
+        passwordPanel.setBorder(BorderFactory.createTitledBorder("Ubah Password"));
+        passwordPanel.setBackground(Color.WHITE);
+        passwordPanel.setMaximumSize(new java.awt.Dimension(500, 300));
         
         GridBagConstraints gbc = new GridBagConstraints();
         gbc.insets = new Insets(10, 10, 10, 10);
         gbc.fill = GridBagConstraints.HORIZONTAL;
         gbc.weightx = 1.0;
         
-        // Current Username (read-only display)
+        // Current Username
         gbc.gridx = 0; gbc.gridy = 0;
-        formPanel.add(new JLabel("Username:"), gbc);
+        passwordPanel.add(new JLabel("Username:"), gbc);
         
         gbc.gridx = 1;
         JLabel lblUsername = new JLabel(Session.getCurrentAdminUsername());
         lblUsername.setFont(new Font("Arial", Font.BOLD, 14));
-        formPanel.add(lblUsername, gbc);
+        passwordPanel.add(lblUsername, gbc);
 
         // Old Password
         gbc.gridx = 0; gbc.gridy = 1;
-        formPanel.add(new JLabel("Password Lama:"), gbc);
+        passwordPanel.add(new JLabel("Password Lama:"), gbc);
         
         gbc.gridx = 1;
         txtOldPassword = new JPasswordField(20);
-        formPanel.add(txtOldPassword, gbc);
+        passwordPanel.add(txtOldPassword, gbc);
 
         // New Password
         gbc.gridx = 0; gbc.gridy = 2;
-        formPanel.add(new JLabel("Password Baru:"), gbc);
+        passwordPanel.add(new JLabel("Password Baru:"), gbc);
         
         gbc.gridx = 1;
         txtNewPassword = new JPasswordField(20);
-        formPanel.add(txtNewPassword, gbc);
+        passwordPanel.add(txtNewPassword, gbc);
 
         // Confirm Password
         gbc.gridx = 0; gbc.gridy = 3;
-        formPanel.add(new JLabel("Konfirmasi Password:"), gbc);
+        passwordPanel.add(new JLabel("Konfirmasi Password:"), gbc);
         
         gbc.gridx = 1;
         txtConfirmPassword = new JPasswordField(20);
-        formPanel.add(txtConfirmPassword, gbc);
+        passwordPanel.add(txtConfirmPassword, gbc);
 
-        // Buttons
+        // Buttons Password
         gbc.gridx = 0; gbc.gridy = 4;
         gbc.gridwidth = 2;
         gbc.insets = new Insets(20, 10, 10, 10);
         
-        JPanel btnPanel = new JPanel();
-        btnPanel.setOpaque(false);
+        JPanel btnPanelPass = new JPanel();
+        btnPanelPass.setOpaque(false);
         
-        btnSave = new JButton("Simpan");
-        btnSave.setBackground(new Color(46, 204, 113));
-        btnSave.setForeground(Color.WHITE);
-        btnSave.setPreferredSize(new java.awt.Dimension(100, 35));
-        btnSave.addActionListener(e -> changePassword());
+        btnSavePassword = new JButton("Simpan");
+        btnSavePassword.setBackground(new Color(46, 204, 113));
+        btnSavePassword.setForeground(Color.WHITE);
+        btnSavePassword.setPreferredSize(new java.awt.Dimension(100, 35));
+        btnSavePassword.addActionListener(e -> changePassword());
 
-        btnCancel = new JButton("Batal");
-        btnCancel.setPreferredSize(new java.awt.Dimension(100, 35));
-        btnCancel.addActionListener(e -> clearForm());
+        btnCancelPassword = new JButton("Batal");
+        btnCancelPassword.setPreferredSize(new java.awt.Dimension(100, 35));
+        btnCancelPassword.addActionListener(e -> clearForm());
         
-        btnPanel.add(btnSave);
-        btnPanel.add(btnCancel);
-        formPanel.add(btnPanel, gbc);
+        btnPanelPass.add(btnSavePassword);
+        btnPanelPass.add(btnCancelPassword);
+        passwordPanel.add(btnPanelPass, gbc);
+        
+        // =======================
+        // Form Panel: Waktu Ujian
+        // =======================
+        JPanel timePanel = new JPanel(new GridBagLayout());
+        timePanel.setBorder(BorderFactory.createTitledBorder("Pengaturan Ujian"));
+        timePanel.setBackground(Color.WHITE);
+        timePanel.setMaximumSize(new java.awt.Dimension(500, 150));
+        
+        GridBagConstraints gbcTime = new GridBagConstraints();
+        gbcTime.insets = new Insets(10, 10, 10, 10);
+        gbcTime.fill = GridBagConstraints.HORIZONTAL;
+        gbcTime.weightx = 1.0;
+        
+        gbcTime.gridx = 0; gbcTime.gridy = 0;
+        timePanel.add(new JLabel("Total Waktu Ujian (Menit):"), gbcTime);
+        
+        gbcTime.gridx = 1;
+        txtTimeLimit = new javax.swing.JSpinner(new javax.swing.SpinnerNumberModel(10, 1, 300, 1));
+        timePanel.add(txtTimeLimit, gbcTime);
 
-        // Center the form panel
+        gbcTime.gridx = 0; gbcTime.gridy = 1;
+        gbcTime.gridwidth = 2;
+        
+        JPanel btnPanelTime = new JPanel();
+        btnPanelTime.setOpaque(false);
+        
+        btnSaveTime = new JButton("Simpan Waktu");
+        btnSaveTime.setBackground(new Color(52, 152, 219));
+        btnSaveTime.setForeground(Color.WHITE);
+        btnSaveTime.setPreferredSize(new java.awt.Dimension(130, 35));
+        btnSaveTime.addActionListener(e -> saveTimeLimit());
+        
+        btnPanelTime.add(btnSaveTime);
+        timePanel.add(btnPanelTime, gbcTime);
+
+        // Add to main wrapper
+        mainWrapper.add(passwordPanel);
+        mainWrapper.add(javax.swing.Box.createRigidArea(new java.awt.Dimension(0, 20)));
+        mainWrapper.add(timePanel);
+
+        // Center the wrapper
         JPanel centerWrapper = new JPanel(new GridBagLayout());
         centerWrapper.setOpaque(false);
         GridBagConstraints wrapperGbc = new GridBagConstraints();
-        centerWrapper.add(formPanel, wrapperGbc);
+        centerWrapper.add(mainWrapper, wrapperGbc);
         
         add(centerWrapper, BorderLayout.CENTER);
+    }
+    
+    private void loadSettings() {
+        int limit = settingRepo.getQuizTimeLimit();
+        txtTimeLimit.setValue(limit);
+    }
+
+    private void saveTimeLimit() {
+        int limit = (int) txtTimeLimit.getValue();
+        settingRepo.saveOrUpdateQuizTimeLimit(limit);
+        JOptionPane.showMessageDialog(this, "Waktu ujian berhasil disimpan (" + limit + " Menit).");
     }
 
     private boolean validateForm() {

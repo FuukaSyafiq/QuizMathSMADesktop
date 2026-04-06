@@ -183,6 +183,13 @@ public class JurusanForm extends JPanel {
             JOptionPane.showMessageDialog(this, "Kelas dan Jurusan tidak boleh kosong", "Error", JOptionPane.ERROR_MESSAGE);
             return;
         }
+        
+        for (int i = 0; i < tableModel.getRowCount(); i++) {
+            if (tableModel.getValueAt(i, 1).toString().equalsIgnoreCase(kelas)) {
+                JOptionPane.showMessageDialog(this, "Kelas " + kelas + " sudah ada", "Error", JOptionPane.ERROR_MESSAGE);
+                return;
+            }
+        }
 
         new SwingWorker<Void, Void>() {
             @Override
@@ -220,6 +227,14 @@ public class JurusanForm extends JPanel {
         if (kelas.isEmpty() || jurusan == null || jurusan.trim().isEmpty()) {
             JOptionPane.showMessageDialog(this, "Kelas dan Jurusan tidak boleh kosong", "Error", JOptionPane.ERROR_MESSAGE);
             return;
+        }
+
+        for (int i = 0; i < tableModel.getRowCount(); i++) {
+            int rowId = (int) tableModel.getValueAt(i, 0);
+            if (tableModel.getValueAt(i, 1).toString().equalsIgnoreCase(kelas) && rowId != id) {
+                JOptionPane.showMessageDialog(this, "Kelas " + kelas + " sudah ada", "Error", JOptionPane.ERROR_MESSAGE);
+                return;
+            }
         }
 
         new SwingWorker<Void, Void>() {

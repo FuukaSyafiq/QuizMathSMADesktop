@@ -33,7 +33,7 @@ public class DaftarSiswaForm extends JPanel {
     private final DataSiswaRepository siswa_repo;
     private final KelasRepository kelas_repo;
     
-    private JTextField txtNama, txtNis, txtUsername, txtPassword, txtNoAbsen;
+    private JTextField txtNama, txtNis, txtUsername, txtPassword, txtNoAbsen, txtJurusan;
     private JComboBox<Kelas> cmbKelas;
     private JTable table;
     private DefaultTableModel tableModel;
@@ -124,7 +124,38 @@ public class DaftarSiswaForm extends JPanel {
         panel.add(new JLabel("Kelas:"), gbc);
         gbc.gridy = 11;
         cmbKelas = new JComboBox<>();
+
+        // Jurusan
+        gbc.gridy = 12;
+        panel.add(new JLabel("Jurusan:"), gbc);
+        gbc.gridy = 13;
+        txtJurusan = new JTextField();
+        txtJurusan.setEditable(false);
+        txtJurusan.setBackground(new Color(240, 240, 240));
+        panel.add(txtJurusan, gbc);
+
+        cmbKelas.addActionListener(e -> {
+            Kelas k = (Kelas) cmbKelas.getSelectedItem();
+            if (k != null) {
+                txtJurusan.setText(k.getJurusan());
+
+                // Auto fill NIS and No Absen if in "Add" mode
+                if (selectedIdSiswa == -1) {
+                    // Last NIS
+                    String lastNis = siswa_repo.getLastNis();
+                    txtNis.setText(generateNextNis(lastNis));
+
+                    // Last Absen in this class
+                    int lastAbsen = siswa_repo.getLastNoAbsenByKelas(k.getId());
+                    txtNoAbsen.setText(String.valueOf(lastAbsen + 1));
+                }
+            } else {
+                txtJurusan.setText("");
+            }
+        });
+
         loadKelasData();
+        gbc.gridy = 11;
         panel.add(cmbKelas, gbc);
 
         // Buttons
@@ -154,12 +185,12 @@ public class DaftarSiswaForm extends JPanel {
         btnPanel.add(btnDelete);
         btnPanel.add(btnClear);
 
-        gbc.gridx = 0; gbc.gridy = 12;
+        gbc.gridx = 0; gbc.gridy = 14;
         gbc.insets = new Insets(20, 5, 5, 5);
         panel.add(btnPanel, gbc);
 
         // Spacer
-        gbc.gridy = 13;
+        gbc.gridy = 15;
         gbc.weighty = 1.0;
         panel.add(new JLabel(), gbc);
         
@@ -202,11 +233,21 @@ public class DaftarSiswaForm extends JPanel {
     }
 
     private void loadKelasData() {
+        // Simpan index terpilih sementara agar tidak tereset jika cuma refresh
+        int currentSelected = cmbKelas.getSelectedIndex();
         cmbKelas.removeAllItems();
         List<Kelas> kelass = kelas_repo.getAllKelas(this);
         for (Kelas k : kelass) {
             cmbKelas.addItem(k);
         }
+        if (currentSelected >= 0 && currentSelected < cmbKelas.getItemCount()) {
+            cmbKelas.setSelectedIndex(currentSelected);
+        }
+    }
+
+    public void refreshData() {
+        loadKelasData();
+        loadData();
     }
 
     private void loadData() {
@@ -252,8 +293,8 @@ public class DaftarSiswaForm extends JPanel {
         if (txtNama.getText().trim().isEmpty()) {
             JOptionPane.showMessageDialog(this, "Nama tidak boleh kosong."); return false;
         }
-        if (txtNis.getText().trim().isEmpty() || !txtNis.getText().matches("\\d+")) {
-            JOptionPane.showMessageDialog(this, "NIS harus angka."); return false;
+        if (txtNis.getText().trim().isEmpty()) {
+            JOptionPane.showMessageDialog(this, "NIS tidak boleh kosong."); return false;
         }
         if (txtUsername.getText().trim().isEmpty()) {
             JOptionPane.showMessageDialog(this, "Username tidak boleh kosong."); return false;
@@ -273,13 +314,21 @@ public class DaftarSiswaForm extends JPanel {
     private void addSiswa() {
         if (!validateForm()) return;
         
+        String nisInput = txtNis.getText().trim();
+        for (Siswa s : siswa_repo.getAllSiswa(this)) {
+            if (s.getNis().equals(nisInput)) {
+                JOptionPane.showMessageDialog(this, "NIS " + nisInput + " sudah ada. Tolong gunakan NIS lain.", "Error", JOptionPane.ERROR_MESSAGE);
+                return;
+            }
+        }
+        
         Kelas selectedKelas = (Kelas) cmbKelas.getSelectedItem();
         Siswa siswa = new Siswa(
                 0,
                 txtNama.getText().trim(),
                 txtUsername.getText().trim(),
                 txtPassword.getText().trim(),
-                txtNis.getText().trim(),
+                nisInput,
                 Integer.parseInt(txtNoAbsen.getText().trim()),
                 selectedKelas
         );
@@ -295,13 +344,21 @@ public class DaftarSiswaForm extends JPanel {
         }
         if (!validateForm()) return;
         
+        String nisInput = txtNis.getText().trim();
+        for (Siswa s : siswa_repo.getAllSiswa(this)) {
+            if (s.getNis().equals(nisInput) && s.getId() != selectedIdSiswa) {
+                JOptionPane.showMessageDialog(this, "NIS " + nisInput + " sudah ada. Tolong gunakan NIS lain.", "Error", JOptionPane.ERROR_MESSAGE);
+                return;
+            }
+        }
+        
          Kelas selectedKelas = (Kelas) cmbKelas.getSelectedItem();
          Siswa siswa = new Siswa(
                 selectedIdSiswa,
                 txtNama.getText().trim(),
                 txtUsername.getText().trim(),
                 txtPassword.getText().trim(),
-                txtNis.getText().trim(),
+                nisInput,
                 Integer.parseInt(txtNoAbsen.getText().trim()),
                 selectedKelas
         );
@@ -329,9 +386,23 @@ public class DaftarSiswaForm extends JPanel {
         txtUsername.setText("");
         txtPassword.setText("");
         txtNoAbsen.setText("");
+        txtJurusan.setText("");
         cmbKelas.setSelectedIndex(-1);
         selectedRow = -1;
         selectedIdSiswa = -1;
         table.clearSelection();
+    }
+    private String generateNextNis(String lastNis) {
+        if (lastNis == null || !lastNis.startsWith("NIS")) {
+            return "NIS001";
+        }
+        String numberPart = lastNis.substring(3).trim();
+        try {
+            int nextNum = Integer.parseInt(numberPart) + 1;
+            int length = numberPart.length();
+            return String.format("NIS%0" + length + "d", nextNum);
+        } catch (NumberFormatException e) {
+            return "NIS001";
+        }
     }
 }

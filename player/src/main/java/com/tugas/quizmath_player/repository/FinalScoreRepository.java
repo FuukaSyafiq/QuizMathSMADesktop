@@ -153,4 +153,31 @@ public class FinalScoreRepository {
         }
         return leaderboard;
     }
+
+    public List<Leaderboard> getScoreBySiswa(int siswaId) {
+        List<Leaderboard> history = new ArrayList<>();
+        try (Session session = Database.getSessionFactory().openSession()) {
+            String hql = "FROM FinalScore fs JOIN FETCH fs.siswa s JOIN FETCH s.kelas k WHERE s.id = :sid ORDER BY fs.createdAt DESC";
+            List<FinalScore> scores = session.createQuery(hql, FinalScore.class)
+                    .setParameter("sid", siswaId)
+                    .list();
+
+            for (FinalScore fs : scores) {
+                history.add(new Leaderboard(
+                        fs.getId(),
+                        fs.getSiswa().getNama(),
+                        fs.getSiswa().getNis(),
+                        fs.getSiswa().getNamaKelas(),
+                        fs.getCorrectAnswer(),
+                        fs.getWrongAnswer(),
+                        fs.getTotalQuestion(),
+                        (int) fs.getFinalScore(),
+                        fs.getCreatedAt()
+                ));
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return history;
+    }
 }

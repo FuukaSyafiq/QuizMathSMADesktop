@@ -215,4 +215,27 @@ public class DataSiswaRepository {
             e.printStackTrace();
         }
     }
+
+    public String getLastNis() {
+        try (org.hibernate.Session session = Database.getSessionFactory().openSession()) {
+            return (String) session.createQuery("SELECT s.nis FROM Siswa s ORDER BY s.nis DESC", String.class)
+                    .setMaxResults(1)
+                    .uniqueResult();
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    public int getLastNoAbsenByKelas(int kelasId) {
+        try (org.hibernate.Session session = Database.getSessionFactory().openSession()) {
+            Integer lastAbsen = (Integer) session.createQuery("SELECT MAX(s.no_absen) FROM Siswa s WHERE s.kelas.id = :id", Integer.class)
+                    .setParameter("id", kelasId)
+                    .uniqueResult();
+            return lastAbsen == null ? 0 : lastAbsen;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return 0;
+        }
+    }
 }

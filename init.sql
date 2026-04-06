@@ -110,9 +110,14 @@ CREATE TABLE siswa_answer (
         REFERENCES final_score(id)
         ON UPDATE CASCADE
         ON DELETE CASCADE
-        REFERENCES siswa(id)
-        ON UPDATE CASCADE
-        ON DELETE CASCADE
+);
+
+-- =========================
+-- TABLE: quiz_setting
+-- =========================
+CREATE TABLE quiz_setting (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    time_limit_minutes INT NOT NULL DEFAULT 10
 );
 
 -- =========================
@@ -120,6 +125,8 @@ CREATE TABLE siswa_answer (
 -- =========================
 INSERT INTO admin (user, password)
 VALUES ('admin', 'admin123');
+
+INSERT INTO quiz_setting (time_limit_minutes) VALUES (10);
 
 INSERT INTO kelas (kelas, jurusan) VALUES
 ('XII RPL 1', 'REKAYASA PERANGKAT LUNAK'),
@@ -143,87 +150,129 @@ INSERT INTO siswa (nama, kelas_id, username, password, nis, no_absen) VALUES
 -- INSERT DATA QUESTION
 -- =========================
 INSERT INTO question (question_text, answer_type, level, topic) VALUES
-('Sebuah meja berbentuk persegi panjang memiliki panjang 150 cm dan lebar 80 cm. Berapakah luas permukaan meja tersebut dalam cm^2?', 'SINGLE_CHOICES', 'MUDAH', 'Persegi Panjang'), -- question_id = 1
-('Jika keliling sebuah lapangan berbentuk persegi adalah 60 meter. Berapakah panjang satu sisi lapangan tersebut?', 'SINGLE_CHOICES', 'MUDAH', 'Persegi'), -- question_id = 2
-('Sebuah kotak mainan berbentuk kubus memiliki panjang rusuk 5 cm. Berapakah volume kotak mainan tersebut dalam cm^3?', 'SINGLE_CHOICES', 'MUDAH', 'Kubus'), -- question_id = 3
-('Sebuah segitiga siku-siku memiliki alas 10 cm dan tinggi 6 cm. Berapakah luas segitiga tersebut?', 'SINGLE_CHOICES', 'MUDAH', 'Segitiga'), -- question_id = 4
-('Sebuah roda sepeda memiliki diameter 70 cm. Berapakah keliling roda tersebut? (Gunakan π = 22/7)', 'SINGLE_CHOICES', 'NORMAL', 'Lingkaran'), -- question_id = 5
-('Sebuah trapesium memiliki panjang sisi sejajar 8 cm dan 12 cm, serta tinggi 5 cm. Berapakah luas trapesium tersebut?', 'SINGLE_CHOICES', 'NORMAL', 'Trapesium'), -- question_id = 6
-('Sebuah lapangan voli berukuran panjang 18 m dan lebar 9 m. Berapakah keliling lapangan tersebut?', 'SINGLE_CHOICES', 'MUDAH', 'Persegi Panjang'), -- question_id = 7
-('Sebuah akuarium berbentuk balok memiliki panjang 10 dm, lebar 5 dm, dan tinggi 6 dm. Berapakah volume akuarium tersebut?', 'SINGLE_CHOICES', 'NORMAL', 'Balok'), -- question_id = 8
-('Diagonal-diagonal pada belah ketupat berturut-turut adalah 16 cm dan 12 cm. Berapakah luas belah ketupat tersebut?', 'SINGLE_CHOICES', 'NORMAL', 'Belah Ketupat'), -- question_id = 9
-('Jika sebuah piring memiliki jari-jari 10 cm, berapakah luas piring tersebut? (Gunakan π = 3.14)', 'SINGLE_CHOICES', 'NORMAL', 'Lingkaran'); -- question_id = 10
+('Akar-akar dari persamaan kuadrat x^2 - 5x + 6 = 0 adalah...', 'SINGLE_CHOICES', 'MUDAH', 'Persamaan Kuadrat'), -- question_id = 1
+('Jika matriks A = [2  1; 4  3], maka determinan matriks A adalah...', 'SINGLE_CHOICES', 'MUDAH', 'Matriks'), -- question_id = 2
+('Suku ke-10 dari barisan aritmatika 2, 5, 8, 11, ... adalah...', 'SINGLE_CHOICES', 'MUDAH', 'Barisan Aritmatika'), -- question_id = 3
+('Nilai dari 2log(8) + 3log(9) adalah...', 'SINGLE_CHOICES', 'MUDAH', 'Logaritma'), -- question_id = 4
+('Diketahui f(x) = 2x + 3 dan g(x) = x - 1. Rumus fungsi komposisi f(g(x)) adalah...', 'SINGLE_CHOICES', 'MUDAH', 'Fungsi Komposisi'), -- question_id = 5
+
+('Nilai dari sin(30°) + cos(60°) adalah...', 'SINGLE_CHOICES', 'NORMAL', 'Trigonometri'), -- question_id = 6
+('Nilai dari lim (x→2) dari fungsi (x^2 - 4) / (x - 2) adalah...', 'SINGLE_CHOICES', 'NORMAL', 'Limit Fungsi'), -- question_id = 7
+('Turunan pertama dari f(x) = x^3 - 4x^2 + 5x adalah...', 'SINGLE_CHOICES', 'NORMAL', 'Turunan'), -- question_id = 8
+('Dua buah dadu dilempar undi bersama-sama. Peluang munculnya jumlah mata dadu 7 adalah...', 'SINGLE_CHOICES', 'NORMAL', 'Peluang'), -- question_id = 9
+('Berapakah rata-rata (mean) dari data tunggal berikut: 4, 5, 6, 7, 8?', 'SINGLE_CHOICES', 'NORMAL', 'Statistika'), -- question_id = 10
+
+('Nilai dari ∫ (dari 0 sampai 2) (3x^2 - 2x + 1) dx adalah...', 'SINGLE_CHOICES', 'SUSAH', 'Integral'), -- question_id = 11
+('Diketahui kubus ABCD.EFGH dengan panjang rusuk 4 cm. Jarak dari titik A ke titik G adalah...', 'SINGLE_CHOICES', 'SUSAH', 'Geometri 3D'), -- question_id = 12
+('Jari-jari dari lingkaran yang memiliki persamaan x^2 + y^2 - 4x + 6y - 12 = 0 adalah...', 'SINGLE_CHOICES', 'SUSAH', 'Persamaan Lingkaran'), -- question_id = 13
+('Diketahui x + y = 3, y + z = 5, dan x + z = 4. Maka nilai dari x + y + z adalah...', 'SINGLE_CHOICES', 'SUSAH', 'SPLTV'), -- question_id = 14
+('Jika f(x) = sin(2x)cos(2x), maka turunan pertamanya (f''(x)) adalah...', 'SINGLE_CHOICES', 'SUSAH', 'Turunan Trigonometri'); -- question_id = 15
 
 -- =========================
 -- INSERT DATA OPTIONS_ANSWER
 -- =========================
 
--- Soal 1
+-- Soal 1 (Mudah - PersKuadrat)
 INSERT INTO options_answer (answer, question_id, score, correct, label) VALUES
-('230 cm^2', 1, 0, FALSE, 'A'),
-('460 cm^2', 1, 0, FALSE, 'B'),
-('12000 cm^2', 1, 1, TRUE, 'C'),
-('15000 cm^2', 1, 0, FALSE, 'D');
+('2 dan 3', 1, 1, TRUE, 'A'),
+('-2 dan -3', 1, 0, FALSE, 'B'),
+('1 dan 6', 1, 0, FALSE, 'C'),
+('-1 dan -6', 1, 0, FALSE, 'D');
 
--- Soal 2
+-- Soal 2 (Mudah - Matriks)
 INSERT INTO options_answer (answer, question_id, score, correct, label) VALUES
-('10 meter', 2, 0, FALSE, 'A'),
-('15 meter', 2, 1, TRUE, 'B'),
-('20 meter', 2, 0, FALSE, 'C'),
-('30 meter', 2, 0, FALSE, 'D');
+('6', 2, 0, FALSE, 'A'),
+('2', 2, 1, TRUE, 'B'),
+('4', 2, 0, FALSE, 'C'),
+('10', 2, 0, FALSE, 'D');
 
--- Soal 3
+-- Soal 3 (Mudah - Barisan)
 INSERT INTO options_answer (answer, question_id, score, correct, label) VALUES
-('25 cm^3', 3, 0, FALSE, 'A'),
-('50 cm^3', 3, 0, FALSE, 'B'),
-('100 cm^3', 3, 0, FALSE, 'C'),
-('125 cm^3', 3, 1, TRUE, 'D');
+('26', 3, 0, FALSE, 'A'),
+('29', 3, 1, TRUE, 'B'),
+('32', 3, 0, FALSE, 'C'),
+('35', 3, 0, FALSE, 'D');
 
--- Soal 4
+-- Soal 4 (Mudah - Logaritma)
 INSERT INTO options_answer (answer, question_id, score, correct, label) VALUES
-('30 cm^2', 4, 1, TRUE, 'A'),
-('40 cm^2', 4, 0, FALSE, 'B'),
-('60 cm^2', 4, 0, FALSE, 'C'),
-('120 cm^2', 4, 0, FALSE, 'D');
+('4', 4, 0, FALSE, 'A'),
+('5', 4, 1, TRUE, 'B'),
+('6', 4, 0, FALSE, 'C'),
+('7', 4, 0, FALSE, 'D');
 
--- Soal 5
+-- Soal 5 (Mudah - Fungsi)
 INSERT INTO options_answer (answer, question_id, score, correct, label) VALUES
-('110 cm', 5, 0, FALSE, 'A'),
-('220 cm', 5, 1, TRUE, 'B'),
-('350 cm', 5, 0, FALSE, 'C'),
-('440 cm', 5, 0, FALSE, 'D');
+('2x - 2', 5, 0, FALSE, 'A'),
+('2x + 1', 5, 1, TRUE, 'B'),
+('2x + 2', 5, 0, FALSE, 'C'),
+('2x + 4', 5, 0, FALSE, 'D');
 
--- Soal 6
+-- Soal 6 (Normal - Trigonometri)
 INSERT INTO options_answer (answer, question_id, score, correct, label) VALUES
-('25 cm^2', 6, 0, FALSE, 'A'),
-('40 cm^2', 6, 0, FALSE, 'B'),
-('50 cm^2', 6, 1, TRUE, 'C'),
-('60 cm^2', 6, 0, FALSE, 'D');
+('0.5', 6, 0, FALSE, 'A'),
+('1', 6, 1, TRUE, 'B'),
+('1.5', 6, 0, FALSE, 'C'),
+('2', 6, 0, FALSE, 'D');
 
--- Soal 7
+-- Soal 7 (Normal - Limit)
 INSERT INTO options_answer (answer, question_id, score, correct, label) VALUES
-('27 m', 7, 0, FALSE, 'A'),
-('54 m', 7, 1, TRUE, 'B'),
-('81 m', 7, 0, FALSE, 'C'),
-('162 m', 7, 0, FALSE, 'D');
+('0', 7, 0, FALSE, 'A'),
+('2', 7, 0, FALSE, 'B'),
+('4', 7, 1, TRUE, 'C'),
+('8', 7, 0, FALSE, 'D');
 
--- Soal 8
+-- Soal 8 (Normal - Turunan)
 INSERT INTO options_answer (answer, question_id, score, correct, label) VALUES
-('30 dm^3', 8, 0, FALSE, 'A'),
-('60 dm^3', 8, 0, FALSE, 'B'),
-('110 dm^3', 8, 0, FALSE, 'C'),
-('300 dm^3', 8, 1, TRUE, 'D');
+('3x^2 - 8x + 5', 8, 1, TRUE, 'A'),
+('3x^2 - 4x + 5', 8, 0, FALSE, 'B'),
+('x^2 - 8x + 5', 8, 0, FALSE, 'C'),
+('3x^2 + 8x - 5', 8, 0, FALSE, 'D');
 
--- Soal 9
+-- Soal 9 (Normal - Peluang)
 INSERT INTO options_answer (answer, question_id, score, correct, label) VALUES
-('48 cm^2', 9, 0, FALSE, 'A'),
-('80 cm^2', 9, 0, FALSE, 'B'),
-('96 cm^2', 9, 1, TRUE, 'C'),
-('192 cm^2', 9, 0, FALSE, 'D');
+('1/6', 9, 1, TRUE, 'A'),
+('1/4', 9, 0, FALSE, 'B'),
+('1/3', 9, 0, FALSE, 'C'),
+('1/2', 9, 0, FALSE, 'D');
 
--- Soal 10
+-- Soal 10 (Normal - Statistika)
 INSERT INTO options_answer (answer, question_id, score, correct, label) VALUES
-('31.4 cm^2', 10, 0, FALSE, 'A'),
-('62.8 cm^2', 10, 0, FALSE, 'B'),
-('100 cm^2', 10, 0, FALSE, 'C'),
-('314 cm^2', 10, 1, TRUE, 'D');
+('5.5', 10, 0, FALSE, 'A'),
+('6', 10, 1, TRUE, 'B'),
+('6.5', 10, 0, FALSE, 'C'),
+('7', 10, 0, FALSE, 'D');
+
+-- Soal 11 (Sulit - Integral)
+INSERT INTO options_answer (answer, question_id, score, correct, label) VALUES
+('4', 11, 0, FALSE, 'A'),
+('5', 11, 0, FALSE, 'B'),
+('6', 11, 1, TRUE, 'C'),
+('8', 11, 0, FALSE, 'D');
+
+-- Soal 12 (Sulit - Geometri)
+INSERT INTO options_answer (answer, question_id, score, correct, label) VALUES
+('4 cm', 12, 0, FALSE, 'A'),
+('16 cm', 12, 0, FALSE, 'B'),
+('4√2 cm', 12, 0, FALSE, 'C'),
+('4√3 cm', 12, 1, TRUE, 'D');
+
+-- Soal 13 (Sulit - Lingkaran)
+INSERT INTO options_answer (answer, question_id, score, correct, label) VALUES
+('4', 13, 0, FALSE, 'A'),
+('5', 13, 1, TRUE, 'B'),
+('6', 13, 0, FALSE, 'C'),
+('7', 13, 0, FALSE, 'D');
+
+-- Soal 14 (Sulit - SPLTV)
+INSERT INTO options_answer (answer, question_id, score, correct, label) VALUES
+('5', 14, 0, FALSE, 'A'),
+('6', 14, 1, TRUE, 'B'),
+('7', 14, 0, FALSE, 'C'),
+('8', 14, 0, FALSE, 'D');
+
+-- Soal 15 (Sulit - Turunan Trigonometri)
+INSERT INTO options_answer (answer, question_id, score, correct, label) VALUES
+('cos(4x)', 15, 0, FALSE, 'A'),
+('2 cos(4x)', 15, 1, TRUE, 'B'),
+('4 cos(4x)', 15, 0, FALSE, 'C'),
+('sin(4x)', 15, 0, FALSE, 'D');

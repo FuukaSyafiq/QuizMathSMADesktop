@@ -76,7 +76,10 @@ public class DashboardForm extends JFrame {
         sidebar.addSoalListener(e -> cardLayout.show(contentPanel, "Soal"));
         sidebar.addLeaderboardListener(e -> cardLayout.show(contentPanel, "Leaderboard"));
         sidebar.addNilaiListener(e -> cardLayout.show(contentPanel, "Nilai"));
-        sidebar.addDaftarSiswaListener(e -> cardLayout.show(contentPanel, "DaftarSiswa"));
+        sidebar.addDaftarSiswaListener(e -> {
+            daftarSiswaPanel.refreshData();
+            cardLayout.show(contentPanel, "DaftarSiswa");
+        });
         sidebar.addJurusanListener(e -> cardLayout.show(contentPanel, "Jurusan"));
         sidebar.addManageAdminListener(e -> cardLayout.show(contentPanel, "ManageAdmin"));
         sidebar.addSettingsListener(e -> cardLayout.show(contentPanel, "Settings"));
